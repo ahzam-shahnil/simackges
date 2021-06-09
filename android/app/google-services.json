@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "152971435047",
+    "project_id": "simackges",
+    "storage_bucket": "simackges.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152971435047:android:9000a94d0a249f49960202",
+        "android_client_info": {
+          "package_name": "com.proApps.simackges"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152971435047-8fiotptsjubddmgfiav3aoq6imkgh5jb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8ntLcQOvePhjRJyzRurTvCV3tBaGq_kc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152971435047-8fiotptsjubddmgfiav3aoq6imkgh5jb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
