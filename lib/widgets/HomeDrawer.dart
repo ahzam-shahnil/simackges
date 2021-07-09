@@ -65,7 +65,7 @@ class HomeDrawer extends StatelessWidget {
                   height: Get.size.height * 0.1,
                 ),
                 applicationName: 'Simackges',
-                applicationVersion: '1.0.3',
+                applicationVersion: '1.0.2',
                 applicationLegalese:
                     '©2021 https://sites.google.com/view/simackges/home',
                 children: <Widget>[
