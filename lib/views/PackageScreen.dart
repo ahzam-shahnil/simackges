@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:simackges/controller/FavColorController.dart';
 
-import 'package:simackges/functions/DbHelper.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/DbHelper.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/Packages.dart';
 import 'package:simackges/widgets/PackageCard.dart';
 
@@ -38,6 +40,10 @@ class _PackageScreenState extends State<PackageScreen> {
 
   final DBHelper _dbHelper = DBHelper();
   late TextEditingController _searchController;
+  final searchFocusNode = FocusNode();
+  // ? Initializing Fav Controller here
+  final controller =
+      Get.lazyPut(() => FavColorController(), fenix: true, tag: 'yes');
 
   @override
   void dispose() {
@@ -48,11 +54,12 @@ class _PackageScreenState extends State<PackageScreen> {
   @override
   void initState() {
     _searchController = TextEditingController();
-    _searchController.addListener(_printLatestValue);
+
+    _searchController.addListener(_setLatestSearch);
     super.initState();
   }
 
-  _printLatestValue() {
+  _setLatestSearch() {
     if (_searchController.text.trim().isNotEmpty) {
       setState(() {
         isSearchEmpty = false;
@@ -68,10 +75,16 @@ class _PackageScreenState extends State<PackageScreen> {
   Widget build(BuildContext context) {
     //variables for usage
     var height = MediaQuery.of(context).size.height;
+
     var packageItemTstyle = TextStyle(
-        color: widget.backColor, fontSize: 16, fontWeight: FontWeight.w500);
+      color: widget.backColor,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    );
+
     return Scaffold(
       backgroundColor: widget.backColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: isFocused != true
             ? Text(
@@ -88,12 +101,15 @@ class _PackageScreenState extends State<PackageScreen> {
                       ),
                       child: TextField(
                         autofocus: isFocused,
+                        focusNode: searchFocusNode,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                          ),
+                          hintStyle:
+                              TextStyle(fontSize: 16, color: Colors.white38),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none,
@@ -112,44 +128,63 @@ class _PackageScreenState extends State<PackageScreen> {
         backgroundColor: widget.backColor,
         actions: [
           IconButton(
-              icon: Icon(Icons.search_outlined),
-              onPressed: () => setState(() {
-                    isFocused = true;
-                  }))
+            icon: Icon(Icons.search_outlined),
+            onPressed: () => setState(() {
+              isFocused = true;
+            }),
+          ),
+          widget.isFavourite
+              ? IconButton(
+                  onPressed: () => _dbHelper.deleteFavourite().then((value) {
+                        setState(() {});
+                      }),
+                  icon: Icon(Icons.delete_rounded))
+              : Container(
+                  height: 0,
+                  width: 0,
+                )
         ],
       ),
 
-      // here all the packages are displayed
-      body: FutureBuilder(
-        future: isSearchEmpty
-            ? widget.isFavourite
-                ? _dbHelper.getFavouriteList(network: widget.network)
-                : _dbHelper.getPackagesList(
-                    network: widget.network, offer: widget.offerNo!)
-            : widget.isFavourite
-                ? _dbHelper.searchFavouriteList(
-                    network: widget.network,
-                    name: _searchController.text.trim())
-                : _dbHelper.searchPackagesList(
-                    network: widget.network,
-                    offer: widget.offerNo!,
-                    name: _searchController.text.trim()),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            PackageScreen.packagesList = snapshot.data;
-            return PackageCard(
-              packagesList: PackageScreen.packagesList,
-              height: height,
-              backColor: widget.backColor,
-              packageItemTstyle: packageItemTstyle,
-              title: widget.title,
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+      //* here all the packages are displayed
+      body: WillPopScope(
+        onWillPop: () async {
+          if (searchFocusNode.hasFocus) {
+            FocusScope.of(context).unfocus();
           }
+          return true;
         },
+        child: FutureBuilder(
+          future: isSearchEmpty
+              ? widget.isFavourite
+                  ? _dbHelper.getFavouriteList(network: widget.network)
+                  : _dbHelper.getPackagesList(
+                      network: widget.network, offer: widget.offerNo!)
+              : widget.isFavourite
+                  ? _dbHelper.searchFavouriteList(
+                      network: widget.network,
+                      name: _searchController.text.trim())
+                  : _dbHelper.searchPackagesList(
+                      network: widget.network,
+                      offer: widget.offerNo!,
+                      name: _searchController.text.trim()),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              PackageScreen.packagesList = snapshot.data;
+              return PackageCard(
+                packagesList: PackageScreen.packagesList,
+                height: height,
+                backColor: widget.backColor,
+                packageItemTstyle: packageItemTstyle,
+                title: widget.title,
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

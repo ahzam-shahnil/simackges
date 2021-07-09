@@ -1,12 +1,10 @@
-import 'package:simackges/functions/constants.dart';
-import 'package:simackges/models/BasicCode.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:get/get.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:google_fonts/google_fonts.dart';
+
+import 'package:simackges/services/constants.dart';
+import 'package:simackges/models/BasicCode.dart';
+import 'package:simackges/services/HelperFunction.dart';
 
 class OfferDrawerItems {
   Widget createHeader({
@@ -25,20 +23,29 @@ class OfferDrawerItems {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ClipOval(
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: Get.height * 0.09,
-                  child: Image.asset(
-                    imgAddress,
-                    height: Get.height * 0.12,
-                    width: Get.width * 0.34,
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(40),
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    )),
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Image.asset(
+                  imgAddress,
+                  height: Get.height * 0.12,
+                  width: Get.width * 0.34,
+                  fit: BoxFit.contain,
                 ),
               ),
               Text(
                 simTitle,
-                style: GoogleFonts.openSans(color: Colors.white, fontSize: 18),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: kOpenSans,
+                ),
               ),
             ],
           ),
@@ -59,7 +66,7 @@ class OfferDrawerItems {
             child: Padding(
               padding: EdgeInsets.only(left: 8.0),
               child: AutoSizeText(
-                getBasicCodeTitle(index),
+                HelperFunction.getBasicCodeTitle(index),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -69,33 +76,5 @@ class OfferDrawerItems {
       ),
       onTap: onTap,
     );
-  }
-
-  String getBasicCodeTitle(int index) {
-    String title = '';
-    switch (index) {
-      case 0:
-        title = kCheckBalanceText;
-        break;
-      case 1:
-        title = kCheckSMS;
-        break;
-      case 2:
-        title = kCheckMinutes;
-        break;
-      case 3:
-        title = kCheckInternet;
-        break;
-      case 4:
-        title = kCardRecharge;
-        break;
-      case 5:
-        title = kGetLoan;
-        break;
-      case 6:
-        title = kBalanceShare;
-        break;
-    }
-    return title;
   }
 }

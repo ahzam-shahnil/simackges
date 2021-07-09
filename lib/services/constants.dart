@@ -1,8 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-// // banner and interstitial ad ids admob
+//  banner and interstitial ad ids admob
 // const kOfferBannerAdId = 'ca-app-pub-2072140483759075/9060793068';
 // const kDetailBannerAdId = 'ca-app-pub-2072140483759075/3382048831';
 // const kAppAdId = "ca-app-pub-2072140483759075~5380198857";
@@ -17,10 +16,10 @@ const kAppAddress =
     'https://play.google.com/store/apps/details?id=com.proApps.simackges';
 
 // routes text
-const kHomeRoute = 'home';
-const kOfferRoute = 'offer';
-const kDetailRoute = 'details';
-const kPackageScreen = 'package';
+const kHomeRoute = '/home';
+const kOfferRoute = '/home/offer';
+const kPackageRoute = '/home/offer/package';
+const kDetailRoute = '/home/offer/package/details';
 
 // text for app
 const kAppTitleText = 'Simackges';
@@ -61,10 +60,10 @@ const kGetLoan = 'Get Advance Balance';
 const kBalanceShare = 'Balance Share';
 
 // Alert Box title
-const kJazzCardR = 'Jazz + Warid';
-const kUfoneCardR = 'Ufone';
-const kZongCardR = 'Zong';
-const kTelenorCardR = 'Telenor';
+const kJazzCardRText = 'Jazz + Warid';
+const kUfoneCardRText = 'Ufone';
+const kZongCardRText = 'Zong';
+const kTelenorCardRText = 'Telenor';
 const kCardRechargeHint = 'Enter Card Number Here (14 Digits)';
 const kShareBalanceHint = 'Enter Recipient Mobile No here:';
 const kBalanceAmountHint = 'Enter Amount Here (Rs 15 - 200)';
@@ -77,15 +76,16 @@ const kUfoneShareCode = '828';
 const kUfoneRSmsCode = '606';
 
 // colors for app
-const kJazzColor = Color(0xFF89060B);
+const kJazzColor = Color(0xFFDF0728);
 const kZongColor = Color(0xff73AB28);
-const kUfoneColor = Color(0xffFC6E00);
+const kUfoneColor = Color(0xffFF6501);
 const kTelenorColor = Color(0xff00A4F0);
 const kPtclColor = Color(0xff006115);
 
 // image address of assets
 const kDesignImgAddress = 'assets/images/Design.png';
 
+const kJazzBackDesign = 'assets/images/jazz_back.png';
 const kJazzImgAddress = 'assets/images/jazzlogo.png';
 const kJazzDeviceAddress = 'assets/images/jazzdevice.jpg';
 const kJazzNetSimAddress = 'assets/images/jnetsim.jpg';
@@ -93,16 +93,19 @@ const kJazzPostPayAddress = 'assets/images/jpostpay.png';
 
 const kWaridImgAddress = 'assets/images/waridlogo.png';
 
+const kTelenorBackDesign = 'assets/images/telenorBack.png';
 const kTelenorImgAddress = 'assets/images/telenorlogo.png';
 const kTelenorBroadAddress = 'assets/images/tbroad.jpg';
 const kTelenorNetSimAddress = 'assets/images/tnetsim.jpg';
 const kTelenorPostPayAddress = 'assets/images/tpostpay.png';
 
+const kZongBackDesign = 'assets/images/zongback.png';
 const kZongImgAddress = 'assets/images/zonglogo.png';
 const kZongPostPayAddress = 'assets/images/zpostpay.png';
 const kZongNetSimAddress = 'assets/images/znetsim.jpg';
 const kZongBroadAddress = 'assets/images/zbroad.jpg';
 
+const kPtclBackDesign = 'assets/images/ptclBack.png';
 const kPtclImgAddress = 'assets/images/ptcl.png';
 const kPtclBroadAddress = 'assets/images/ptclbroad.jpg';
 const kPtclEvoAddress = 'assets/images/ptclevo9_3.jpg';
@@ -112,6 +115,7 @@ const kPtclCarfiAddress = 'assets/images/ptclcarfi.png';
 const kPtclCharjiAddress = 'assets/images/ptclcharji.png';
 const kPtclTvAddress = 'assets/images/ptcltv.png';
 
+const kUfoneBackDesign = 'assets/images/ufone_back.png';
 const kUfoneImgAddress = 'assets/images/ufonelogo.png';
 const kUfonePostPayAddress = 'assets/images/upostpay.png';
 const kUfonePrePayAddress = 'assets/images/uprepay.png';
@@ -125,11 +129,14 @@ const kLocationIcon = Icons.location_on_outlined;
 const kOtherIcon = Icons.card_giftcard_outlined;
 
 // text style
-var kOfferTextStyle = GoogleFonts.ptSans(
-    fontSize: 17, color: Colors.white, fontWeight: FontWeight.w500);
+var kOpenSans = 'OpenSans_Reg';
+var kOpenSansBold = 'OpenSans_Bold';
+
+var kOfferTextStyle =
+    TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w500);
 const kPackageTextStyle =
     TextStyle(fontSize: 17, color: Colors.black, fontWeight: FontWeight.bold);
 var kWhiteTextStyle = TextStyle(color: Colors.grey[50]);
 var kGreenTextStyle = TextStyle(color: kZongColor, fontWeight: FontWeight.w700);
-var kGreenHeadingStyle = GoogleFonts.ptSans(
-    color: kZongColor, fontWeight: FontWeight.w600, fontSize: 23);
+var kGreenHeadingStyle =
+    TextStyle(color: kZongColor, fontWeight: FontWeight.w600, fontSize: 23);

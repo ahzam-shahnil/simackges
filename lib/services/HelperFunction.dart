@@ -1,20 +1,68 @@
 import 'dart:async';
 
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/Packages.dart';
-
-import 'constants.dart';
 
 class HelperFunction {
   static String formatDetails(String value) {
     value = value.replaceAll("\\n", '.\n');
     return value;
+  }
+
+  static String getOfferBackDesign(int sim) {
+    String back = '';
+    switch (sim) {
+      case 1:
+        back = kJazzBackDesign;
+        break;
+      case 2:
+        back = kUfoneBackDesign;
+        break;
+      case 3:
+        back = kTelenorBackDesign;
+        break;
+      case 4:
+        back = kZongBackDesign;
+        break;
+      case 5:
+        back = kPtclBackDesign;
+        break;
+    }
+    return back;
+  }
+
+  static String getBasicCodeTitle(int index) {
+    String title = '';
+    switch (index) {
+      case 0:
+        title = kCheckBalanceText;
+        break;
+      case 1:
+        title = kCheckSMS;
+        break;
+      case 2:
+        title = kCheckMinutes;
+        break;
+      case 3:
+        title = kCheckInternet;
+        break;
+      case 4:
+        title = kCardRecharge;
+        break;
+      case 5:
+        title = kGetLoan;
+        break;
+      case 6:
+        title = kBalanceShare;
+        break;
+    }
+    return title;
   }
 
   static String getSimPic(String pic) {

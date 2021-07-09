@@ -1,4 +1,4 @@
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class OfferIcon {

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/constants.dart';
 
 class DetailContainer extends StatelessWidget {
   const DetailContainer({
@@ -21,11 +21,13 @@ class DetailContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width * 0.4,
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      width: width * 0.44,
+      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Colors.white),
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +35,10 @@ class DetailContainer extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-                color: backColor, fontSize: 18, fontWeight: FontWeight.w900),
+              color: backColor,
+              fontFamily: kOpenSansBold,
+              fontSize: width * 0.045,
+            ),
           ),
           AutoSizeText(
             value != null
@@ -43,7 +48,10 @@ class DetailContainer extends StatelessWidget {
                 : '_',
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: backColor, fontSize: 18, fontWeight: FontWeight.w400),
+              color: backColor,
+              fontWeight: FontWeight.w500,
+              fontSize: width * 0.038,
+            ),
           ),
         ],
       ),

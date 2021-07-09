@@ -1,24 +1,23 @@
-// ignore: unused_import
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:get/get.dart';
+
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/views/OfferScreen.dart';
 import 'package:simackges/widgets/HomeDrawer.dart';
 import 'package:simackges/widgets/NetworkCard.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
+  final NetworkCard customcard = NetworkCard();
+
+  final bool _floating = false;
   final bool _pinned = true;
   final bool _snap = false;
-  final bool _floating = false;
-  final NetworkCard customcard = NetworkCard();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      backgroundColor: Color(0xfff4f9f9),
+      backgroundColor: Colors.blueGrey.shade300,
       drawer: HomeDrawer(),
       body: SafeArea(
         child: CustomScrollView(
@@ -34,26 +33,22 @@ class HomeScreen extends StatelessWidget {
                   bottomRight: Radius.circular(15),
                 ),
               ),
-              expandedHeight: height * 0.249,
-              backgroundColor: Color(0xFFf2a154),
+              expandedHeight: height * 0.26,
+              backgroundColor: Colors.blueGrey,
               title: Text(
                 kAppTitleText,
                 style: TextStyle(color: Colors.white),
               ),
               flexibleSpace: FlexibleSpaceBar(
-                background: Card(
-                  color: Colors.green[100],
-                  margin: EdgeInsets.only(top: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                    child: Image.asset(
-                      kDesignImgAddress,
-                      fit: BoxFit.contain,
-                      alignment: Alignment.bottomCenter,
-                    ),
+                background: Container(
+                  margin: EdgeInsets.only(top: 15),
+                  clipBehavior: Clip.hardEdge,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Image.asset(
+                    kDesignImgAddress,
+                    fit: BoxFit.fill,
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
               ),
@@ -65,25 +60,23 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Text(
                       kPackageText,
-                      style: GoogleFonts.openSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: TextStyle(
+                          fontSize: height * 0.026,
+                          fontFamily: kOpenSans,
+                          color: Colors.white),
                     ),
                     Expanded(
-                      child: GridView.count(
-                        primary: false,
-                        physics: NeverScrollableScrollPhysics(),
-                        childAspectRatio: 2 / 1.789,
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        children: [
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(children: [
                           customcard.getNetworkCard(
                             image: Image.asset(
                               kJazzImgAddress,
+                              fit: BoxFit.contain,
                             ),
                             onTap: () => Get.to(
-                              OfferScreen(
+                              () => OfferScreen(
                                 networkId: 1,
                                 simTitle: kJazzWaridText,
                                 backColor: kJazzColor,
@@ -93,23 +86,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                           customcard.getNetworkCard(
                             image: Image.asset(
-                              kWaridImgAddress,
-                            ),
-                            onTap: () => Get.to(
-                              OfferScreen(
-                                networkId: 1,
-                                simTitle: kJazzWaridText,
-                                backColor: kJazzColor,
-                                imgAddress: kWaridImgAddress,
-                              ),
-                            )!,
-                          ),
-                          customcard.getNetworkCard(
-                            image: Image.asset(
                               kUfoneImgAddress,
                             ),
                             onTap: () => Get.to(
-                              OfferScreen(
+                              () => OfferScreen(
                                 networkId: 2,
                                 simTitle: 'Ufone ',
                                 backColor: kUfoneColor,
@@ -119,10 +99,38 @@ class HomeScreen extends StatelessWidget {
                           ),
                           customcard.getNetworkCard(
                             image: Image.asset(
+                              kZongImgAddress,
+                            ),
+                            onTap: () => Get.to(
+                              () => OfferScreen(
+                                networkId: 4,
+                                simTitle: 'Zong ',
+                                backColor: kZongColor,
+                                imgAddress: kZongImgAddress,
+                              ),
+                            )!,
+                          ),
+                        ]),
+                        Column(children: [
+                          customcard.getNetworkCard(
+                            image: Image.asset(
+                              kWaridImgAddress,
+                            ),
+                            onTap: () => Get.to(
+                              () => OfferScreen(
+                                networkId: 1,
+                                simTitle: kJazzWaridText,
+                                backColor: kJazzColor,
+                                imgAddress: kWaridImgAddress,
+                              ),
+                            )!,
+                          ),
+                          customcard.getNetworkCard(
+                            image: Image.asset(
                               kTelenorImgAddress,
                             ),
                             onTap: () => Get.to(
-                              OfferScreen(
+                              () => OfferScreen(
                                 networkId: 3,
                                 simTitle: 'Telenor ',
                                 backColor: kTelenorColor,
@@ -132,23 +140,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                           customcard.getNetworkCard(
                             image: Image.asset(
-                              kZongImgAddress,
-                            ),
-                            onTap: () => Get.to(
-                              OfferScreen(
-                                networkId: 4,
-                                simTitle: 'Zong ',
-                                backColor: kZongColor,
-                                imgAddress: kZongImgAddress,
-                              ),
-                            )!,
-                          ),
-                          customcard.getNetworkCard(
-                            image: Image.asset(
                               kPtclImgAddress,
                             ),
                             onTap: () => Get.to(
-                              OfferScreen(
+                              () => OfferScreen(
                                 networkId: 5,
                                 simTitle: 'Ptcl ',
                                 backColor: kPtclColor,
@@ -156,9 +151,9 @@ class HomeScreen extends StatelessWidget {
                               ),
                             )!,
                           ),
-                        ],
-                      ),
-                    ),
+                        ])
+                      ],
+                    )),
                   ],
                 ),
               ),

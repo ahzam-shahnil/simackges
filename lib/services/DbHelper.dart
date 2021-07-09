@@ -1,21 +1,28 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'package:simackges/controller/FavColorController.dart';
 import 'package:simackges/models/BasicCode.dart';
 import 'package:simackges/models/Offers.dart';
 import 'package:simackges/models/Packages.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:simackges/widgets/CustomSnackBar.dart';
 
 class DBHelper {
   static Database? _db;
+
+  //? Instances declared
   CustomSnackBar _snackBar = CustomSnackBar();
-  static Future<void> _openDb() async {
+
+  Future<void> openDb() async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "allsim.db");
 
-// Check if the database exists
+    // Check if the database exists
     var exists = await databaseExists(path);
 
     if (!exists) {
@@ -32,12 +39,12 @@ class DBHelper {
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
     }
-// open the database
+    // open the database
     _db = await openDatabase(path, readOnly: false);
   }
 
   Future<List<Offers>> getOffersList({required int network}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!
         .query('OFFERS', where: 'sim=?', whereArgs: [network.toString()]);
     return List.generate(maps.length, (i) {
@@ -51,7 +58,7 @@ class DBHelper {
   }
 
   Future<List<BasicCode>> getBasicCodeList({required int network}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.query('BASICCODES',
         where: 'network=?', whereArgs: [network.toString()]);
     return List.generate(maps.length, (i) {
@@ -66,22 +73,41 @@ class DBHelper {
   }
 
   Future<int> insertFavourite(Packages package) async {
-    await _openDb();
+    await openDb();
     int _id = -1;
     bool isPresent =
         await checkFavouriteList(name: package.name, network: package.network);
     if (isPresent) {
-      _snackBar.snackBar("Offer is already available in favourite.");
+      await _db!.delete('FAVORITE',
+          where: "network=? and name LIKE ?",
+          whereArgs: [package.network, '${package.name}']);
+      _snackBar.snackBar(
+        msg: "Offer is removed from favourite.",
+      );
     } else {
-      _snackBar.snackBar("Offer is saved in favourite.");
+      _snackBar.snackBar(
+        msg: "Offer is saved in favourite.",
+      );
       _id = await _db!.insert('FAVORITE', package.toMap());
     }
+    Get.find<FavColorController>(tag: 'yes').changeColor();
     return _id;
+  }
+
+  Future<void> deleteFavourite() async {
+    try {
+      await openDb();
+      await _db!.delete(
+        'FAVORITE',
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<bool> checkFavouriteList(
       {required String name, required String network}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.rawQuery(
         "SELECT * from FAVORITE where network=? and name LIKE ?;",
         [network.toString(), '$name']);
@@ -93,7 +119,7 @@ class DBHelper {
   }
 
   Future<List<Packages>> getFavouriteList({required int network}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.rawQuery(
         "SELECT * from FAVORITE where network=? ;", [network.toString()]);
 
@@ -120,7 +146,7 @@ class DBHelper {
 
   Future<List<Packages>> getPackagesList(
       {required int network, required int offer}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.rawQuery(
         "SELECT * from PACKAGES where network=? and offer=?;",
         [network.toString(), offer]);
@@ -139,7 +165,7 @@ class DBHelper {
         send: maps[i]['send'],
         activate: maps[i]['activate'],
         deactivate: maps[i]['deactivate'],
-        detail: maps[i]['detail'],
+        detail: maps[i]['detail'].toString(),
         pic: maps[i]['pic'],
         offer: maps[i]['offer'],
       );
@@ -148,7 +174,7 @@ class DBHelper {
 
   Future<List<Packages>> searchFavouriteList(
       {required int network, required String name}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.query('FAVORITE',
         where: "network=? AND name LIKE ?",
         whereArgs: [network.toString(), '%$name%']);
@@ -175,7 +201,7 @@ class DBHelper {
 
   Future<List<Packages>> searchPackagesList(
       {required int network, required int offer, required String name}) async {
-    await _openDb();
+    await openDb();
     final List<Map<dynamic, dynamic>> maps = await _db!.query('PACKAGES',
         where: "network=? AND offer=? AND name LIKE ?",
         whereArgs: [network.toString(), offer, '%$name%']);

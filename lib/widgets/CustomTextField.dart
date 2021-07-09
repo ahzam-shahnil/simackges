@@ -1,4 +1,4 @@
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
     required TextEditingController textController,
     required this.hintText,
     required this.maxLength,
-  })   : _textController = textController,
+  })  : _textController = textController,
         super(key: key);
 
   final TextEditingController _textController;

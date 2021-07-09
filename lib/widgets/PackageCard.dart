@@ -3,9 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:simackges/controller/FavColorController.dart';
 
-import 'package:simackges/functions/HelperFunction.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/HelperFunction.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/Packages.dart';
 import 'package:simackges/views/DetailsScreen.dart';
 import 'package:simackges/widgets/PackageColumn.dart';
@@ -18,7 +19,7 @@ class PackageCard extends StatelessWidget {
     required this.backColor,
     required this.packageItemTstyle,
     required this.title,
-  })   : _packagesList = packagesList,
+  })  : _packagesList = packagesList,
         super(key: key);
 
   final Color backColor;
@@ -214,23 +215,31 @@ class PackageCard extends StatelessWidget {
 
                     //* View detail button here
                     ElevatedButton(
-                      onPressed: () => Get.to(
-                        () => DetailScreen(
-                            title: title,
-                            package: package,
-                            backColor: backColor),
-                      )!
-                          .then((value) {
-                        //? Interstital Ad here
-                        FacebookInterstitialAd.loadInterstitialAd(
-                          placementId: kInterstDetailFbAdId,
-                          listener: (result, value) {
-                            if (result == InterstitialAdResult.LOADED)
-                              FacebookInterstitialAd.showInterstitialAd(
-                                  delay: 5000);
-                          },
-                        );
-                      }),
+                      onPressed: () {
+                        //? here we are changing the current value of package to see
+                        //? if the current package is favourite
+                        Get.find<FavColorController>(tag: 'yes').changeValue(
+                            name: package.name, network: package.network);
+
+                        //* moving to details screen
+                        Get.to(
+                          () => DetailScreen(
+                              title: title,
+                              package: package,
+                              backColor: backColor),
+                        )!
+                            .then((value) {
+                          //? Interstital Ad here
+                          FacebookInterstitialAd.loadInterstitialAd(
+                            placementId: kInterstDetailFbAdId,
+                            listener: (result, value) {
+                              if (result == InterstitialAdResult.LOADED)
+                                FacebookInterstitialAd.showInterstitialAd(
+                                    delay: 5000);
+                            },
+                          );
+                        });
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: backColor,
                       ),

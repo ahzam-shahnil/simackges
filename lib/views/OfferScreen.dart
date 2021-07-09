@@ -1,19 +1,17 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:facebook_audience_network/ad/ad_banner.dart';
-import 'package:simackges/functions/DbHelper.dart';
-import 'package:simackges/functions/HelperFunction.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:simackges/services/DbHelper.dart';
+import 'package:simackges/services/HelperFunction.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/BasicCode.dart';
 import 'package:simackges/models/Offers.dart';
 import 'package:simackges/views/PackageScreen.dart';
 import 'package:simackges/widgets/CustomTextField.dart';
 import 'package:simackges/widgets/OfferDrawerItems.dart';
 import 'package:simackges/widgets/offerIcon.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class OfferScreen extends StatefulWidget {
   OfferScreen({
@@ -39,31 +37,15 @@ class _OfferScreenState extends State<OfferScreen> {
   late TextEditingController _cardRechargeController;
   late TextEditingController _balanceShareController;
   final DBHelper _dbHelper = DBHelper();
+
   // custom widget classes for icon and drawer
   OfferIcon offerIcon = OfferIcon();
   OfferDrawerItems offerDrawer = OfferDrawerItems();
-
-  // // Banner Ad
-  // BannerAd? bannerAd;
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   final adstate = Provider.of<AdState>(context);
-  //   adstate.initialization.then((value) => setState(() {
-  //         bannerAd = BannerAd(
-  //           size: AdSize.smartBanner,
-  //           adUnitId: adstate.bannerAdUnitId,
-  //           listener: AdState.adListener,
-  //           request: AdRequest(),
-  //         )..load();
-  //       }));
-  // }
 
   @override
   void initState() {
     _cardRechargeController = TextEditingController();
     _balanceShareController = TextEditingController();
-
     super.initState();
   }
 
@@ -88,16 +70,16 @@ class _OfferScreenState extends State<OfferScreen> {
     String title = '';
     switch (widget.networkId) {
       case 1:
-        title = kJazzCardR;
+        title = kJazzCardRText;
         break;
       case 2:
-        title = kUfoneCardR;
+        title = kUfoneCardRText;
         break;
       case 3:
-        title = kTelenorCardR;
+        title = kTelenorCardRText;
         break;
       case 4:
-        title = kZongCardR;
+        title = kZongCardRText;
         break;
     }
     return title;
@@ -220,6 +202,7 @@ class _OfferScreenState extends State<OfferScreen> {
   Widget build(BuildContext context) {
     //? getting height of device screen
     var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: buildDrawer(),
@@ -229,7 +212,6 @@ class _OfferScreenState extends State<OfferScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.favorite_border_rounded),
-            //? Todo implement favourite class here
             onPressed: () => Get.to(
               () => PackageScreen(
                 title: widget.simTitle + kFavouriteText,
@@ -241,23 +223,33 @@ class _OfferScreenState extends State<OfferScreen> {
           )
         ],
       ),
-      body: Container(
-        child: Column(
+      body: ListView.builder(
+        itemCount: 1,
+        itemBuilder: (context, index) => Column(
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: height * 0.03,
-                ),
                 Container(
-                  color: Colors.transparent,
+                  clipBehavior: Clip.hardEdge,
+                  height: height * 0.21,
+                  width: width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
                   child: Image.asset(
-                    kDesignImgAddress,
-                    fit: BoxFit.contain,
+                    HelperFunction.getOfferBackDesign(widget.networkId),
+                    fit: BoxFit.fill,
                   ),
                 ),
 
-                //?Offer types are displayed here
+                SizedBox(
+                  height: height * 0.05,
+                ),
+
+                //?   Offer types are displayed here
                 FutureBuilder(
                   future: _dbHelper.getOffersList(network: widget.networkId),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -271,7 +263,9 @@ class _OfferScreenState extends State<OfferScreen> {
                           return Card(
                             clipBehavior: Clip.hardEdge,
                             margin: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 3.5),
+                              horizontal: 25,
+                              vertical: 3.5,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),

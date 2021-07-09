@@ -1,46 +1,36 @@
 import 'package:auto_size_text/auto_size_text.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:facebook_audience_network/ad/ad_banner.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:simackges/controller/FavColorController.dart';
 
-import 'package:simackges/functions/DbHelper.dart';
-import 'package:simackges/functions/HelperFunction.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/DbHelper.dart';
+import 'package:simackges/services/HelperFunction.dart';
+import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/Packages.dart';
 import 'package:simackges/widgets/DetailsContainer.dart';
 
-class DetailScreen extends StatefulWidget {
-  DetailScreen(
-      {required this.title, required this.package, required this.backColor});
+class DetailScreen extends StatelessWidget {
+  DetailScreen({this.title, this.package, this.backColor});
 
   //* Variables declaration here
-  final Color backColor;
-  final Packages package;
-  final String title;
+  final Color? backColor;
+  final Packages? package;
+  final String? title;
 
-  @override
-  _DetailScreenState createState() => _DetailScreenState();
-}
-
-class _DetailScreenState extends State<DetailScreen> {
+  //? Var declared here
   final DBHelper _dbHelper = DBHelper();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: widget.backColor,
+      backgroundColor: backColor,
       appBar: AppBar(
-        backgroundColor: widget.backColor,
+        backgroundColor: backColor,
         title: Text(
-          widget.title,
+          title!,
           style: kWhiteTextStyle,
         ),
       ),
@@ -49,19 +39,20 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Column(
           children: [
             Text(
-              widget.package.name,
-              style: GoogleFonts.openSans(
-                fontSize: 20,
+              package!.name,
+              style: TextStyle(
+                fontFamily: kOpenSansBold,
+                fontSize: width * 0.045,
                 color: Colors.white,
-                fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 4,
             ),
 
             //? this row is for details tab
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -69,36 +60,34 @@ class _DetailScreenState extends State<DetailScreen> {
                     DetailContainer(
                       width: width,
                       text: kOnNet,
-                      value: widget.package.onnet,
+                      value: package!.onnet,
                       unit: ' Mins',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kSMS,
-                      value: widget.package.sms,
+                      value: package!.sms,
                       unit: ' Msgs',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kValidity,
-                      value: widget.package.validity!.contains('.')
-                          ? (double.tryParse(widget.package.validity!)! * 100)
+                      value: package!.validity!.contains('.')
+                          ? (double.tryParse(package!.validity!)! * 100)
                               .toInt()
                               .toString()
-                          : widget.package.validity!,
-                      unit: widget.package.validity!.contains('.')
-                          ? ' Hour'
-                          : ' Day',
-                      backColor: widget.backColor,
+                          : package!.validity!,
+                      unit: package!.validity!.contains('.') ? ' Hour' : ' Day',
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kActivation,
-                      value: widget.package.activate,
+                      value: package!.activate,
                       unit: '',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                   ],
                 ),
@@ -108,30 +97,30 @@ class _DetailScreenState extends State<DetailScreen> {
                     DetailContainer(
                       width: width,
                       text: kOffNet,
-                      value: widget.package.offnet,
+                      value: package!.offnet,
                       unit: ' Mins',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kInternet,
-                      value: widget.package.mbs,
+                      value: package!.mbs,
                       unit: ' MB',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kPrice,
-                      value: widget.package.price,
+                      value: package!.price,
                       unit: 'Rs',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                     DetailContainer(
                       width: width,
                       text: kDeactivation,
-                      value: widget.package.deactivate,
+                      value: package!.deactivate,
                       unit: '',
-                      backColor: widget.backColor,
+                      backColor: backColor!,
                     ),
                   ],
                 ),
@@ -144,6 +133,7 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 Container(
                   clipBehavior: Clip.hardEdge,
+                  // Todo: width: width * 0.3,
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
                   ),
@@ -155,9 +145,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: InkWell(
                       onTap: () => HelperFunction.displayInstructionDialog(
                           context: context,
-                          backColor: widget.backColor,
+                          backColor: backColor!,
                           rechargeTitle: 'Confirmation',
-                          package: widget.package),
+                          package: package!),
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -168,7 +158,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: Text(
                           'Activate',
                           style: TextStyle(
-                            color: widget.backColor,
+                            color: backColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -184,15 +174,21 @@ class _DetailScreenState extends State<DetailScreen> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(4),
                     child: Material(
-                      color: Colors.white.withOpacity(0.0),
+                      color: Colors.transparent,
                       child: InkWell(
                         onTap: () async {
-                          await _dbHelper.insertFavourite(widget.package);
+                          await _dbHelper.insertFavourite(package!);
                         },
-                        child: Icon(
-                          Icons.favorite_border_rounded,
-                          color: Colors.white,
-                          size: 40,
+                        child: Obx(
+                          () => Icon(
+                            Icons.favorite_rounded,
+                            color: Get.find<FavColorController>(tag: 'yes')
+                                    .favColor
+                                    .value
+                                ? Colors.red
+                                : Colors.white,
+                            size: width * 0.1,
+                          ),
                         ),
                       ),
                     ),
@@ -201,7 +197,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 5,
             ),
 
             //? details of package starts here
@@ -210,12 +206,14 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 Flexible(
                   child: AutoSizeText(
-                    '${HelperFunction.formatDetails(widget.package.detail)}',
+                    '${HelperFunction.formatDetails(package!.detail)}',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400),
-                    maxLines: 6,
+                      color: Colors.white,
+                      fontSize: height * 0.021,
+                      wordSpacing: height * 0.005,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 5,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
@@ -225,7 +223,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
             //? Banner Ad starts here
             Container(
-              alignment: Alignment(0.5, 1),
               child: FacebookBannerAd(
                 placementId: kOfferBannerFbAdId,
                 bannerSize: BannerSize.STANDARD,

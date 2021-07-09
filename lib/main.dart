@@ -1,12 +1,17 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:facebook_audience_network/facebook_audience_network.dart';
-import 'package:flutter/services.dart';
-import 'package:simackges/views/HomeScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+import 'package:simackges/views/HomeScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/LICENSE.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   FacebookAudienceNetwork.init();

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:share/share.dart';
-import 'package:simackges/functions/HelperFunction.dart';
-import 'package:simackges/functions/constants.dart';
+import 'package:simackges/services/HelperFunction.dart';
+import 'package:simackges/services/constants.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({
@@ -16,11 +17,13 @@ class HomeDrawer extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           Container(
-            color: Color(0xFFe8ffff),
+            color: Colors.blueGrey,
             child: DrawerHeader(
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
               child: Image.asset(
                 kDesignImgAddress,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -58,16 +61,16 @@ class HomeDrawer extends StatelessWidget {
                 context: context,
                 applicationIcon: Image.asset(
                   'assets/images/logo.png',
-                  width: 50,
-                  height: 50,
+                  width: Get.size.width * 0.1,
+                  height: Get.size.height * 0.1,
                 ),
                 applicationName: 'Simackges',
-                applicationVersion: '1.0.0',
+                applicationVersion: '1.0.3',
                 applicationLegalese:
                     '©2021 https://sites.google.com/view/simackges/home',
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(top: 15),
+                      padding: EdgeInsets.only(top: 10),
                       child: Text(
                         kAboutDialogText,
                         maxLines: 20,
