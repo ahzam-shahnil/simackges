@@ -37,8 +37,8 @@ class PackageColumn extends StatelessWidget {
           ),
           Container(
             width: width / count,
-            margin: EdgeInsets.symmetric(horizontal: 8),
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15), color: backColor),
             child: AutoSizeText(

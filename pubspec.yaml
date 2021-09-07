@@ -5,19 +5,20 @@ dependencies:
   facebook_audience_network: ^1.0.0-nullsafety.0
   flutter:
     sdk: flutter
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.9.2
+  flutter_styled_toast: ^2.0.0
   get: ^4.1.4
   path: ^1.8.0
   share: ^2.0.4
-  sqflite: ^2.0.0+3
-  url_launcher: ^6.0.8
-  flutter_styled_toast: ^2.0.0
+  sqflite: ^2.0.0+4
+  url_launcher: ^6.0.10
 description: All Networks Packages Codes and Info
 dev_dependencies:
+  flutter_native_splash: ^1.2.1
   flutter_test:
     sdk: flutter
 environment:
-  sdk: '>=2.12.0-133.7.beta <3.0.0'
+  sdk: '>=2.12.0<3.0.0'
 flutter:
   assets:
     - assets/google_fonts/
@@ -38,4 +39,4 @@ flutter_icons:
   image_path: assets/images/logo.png
   ios: true
 name: simackges
-version: 1.0.2+3
+version: 1.0.3+4

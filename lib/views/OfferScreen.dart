@@ -32,7 +32,7 @@ class OfferScreen extends StatefulWidget {
 
 class _OfferScreenState extends State<OfferScreen> {
   //Var declaration
-  List<BasicCode> basicCodeList = [];
+
   List<Offers> offersList = [];
   late TextEditingController _cardRechargeController;
   late TextEditingController _balanceShareController;
@@ -40,7 +40,6 @@ class _OfferScreenState extends State<OfferScreen> {
 
   // custom widget classes for icon and drawer
   OfferIcon offerIcon = OfferIcon();
-  OfferDrawerItems offerDrawer = OfferDrawerItems();
 
   @override
   void initState() {
@@ -98,7 +97,7 @@ class _OfferScreenState extends State<OfferScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             title: Text(
               '$rechargeTitle Card Recharge',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             backgroundColor: widget.backColor,
             content: SingleChildScrollView(
@@ -111,14 +110,14 @@ class _OfferScreenState extends State<OfferScreen> {
             actions: <Widget>[
               TextButton(
                 style: textButtonStyle,
-                child: Text('CANCEL'),
+                child: const Text('CANCEL'),
                 onPressed: () {
                   _cardRechargeController.clear();
                   Navigator.pop(context);
                 },
               ),
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 style: textButtonStyle,
                 onPressed: () {
                   _cardRechargeController.text.length == 14
@@ -164,7 +163,7 @@ class _OfferScreenState extends State<OfferScreen> {
             actions: <Widget>[
               TextButton(
                 style: textButtonStyle,
-                child: Text('CANCEL'),
+                child: const Text('CANCEL'),
                 onPressed: () {
                   _balanceShareController.clear();
                   _cardRechargeController.clear();
@@ -172,7 +171,7 @@ class _OfferScreenState extends State<OfferScreen> {
                 },
               ),
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 style: textButtonStyle,
                 onPressed: () {
                   if (code == kUfoneShareCode) {
@@ -211,7 +210,7 @@ class _OfferScreenState extends State<OfferScreen> {
         backgroundColor: widget.backColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite_border_rounded),
+            icon: const Icon(Icons.favorite_border_rounded),
             onPressed: () => Get.to(
               () => PackageScreen(
                 title: widget.simTitle + kFavouriteText,
@@ -233,10 +232,10 @@ class _OfferScreenState extends State<OfferScreen> {
                   clipBehavior: Clip.hardEdge,
                   height: height * 0.21,
                   width: width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
+                  decoration: const BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: const Radius.circular(15),
+                      bottomRight: const Radius.circular(15),
                     ),
                   ),
                   child: Image.asset(
@@ -262,7 +261,7 @@ class _OfferScreenState extends State<OfferScreen> {
                           Offers offer = offersList[index];
                           return Card(
                             clipBehavior: Clip.hardEdge,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 25,
                               vertical: 3.5,
                             ),
@@ -271,7 +270,7 @@ class _OfferScreenState extends State<OfferScreen> {
                             ),
                             color: widget.backColor,
                             child: ListTile(
-                              contentPadding: EdgeInsets.only(left: 5),
+                              contentPadding: const EdgeInsets.only(left: 5),
                               leading: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: Icon(
@@ -297,8 +296,8 @@ class _OfferScreenState extends State<OfferScreen> {
                         },
                       );
                     } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
+                      return const Center(
+                        child: const CircularProgressIndicator(),
                       );
                     }
                   },
@@ -341,16 +340,19 @@ class _OfferScreenState extends State<OfferScreen> {
   Drawer buildDrawer() {
     return Drawer(
       child: ListView(
+        shrinkWrap: true,
         children: [
           //creating drawer header here
-          offerDrawer.createHeader(
-              backColor: widget.backColor,
-              imgAddress: widget.imgAddress,
-              simTitle: widget.simTitle),
+          OfferDrawerHeader(
+            backColor: widget.backColor,
+            imgAddress: widget.imgAddress,
+            simTitle: widget.simTitle,
+          ),
           FutureBuilder(
             future: _dbHelper.getBasicCodeList(network: widget.networkId),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
+                List<BasicCode> basicCodeList = [];
                 basicCodeList = snapshot.data;
                 return ListView.builder(
                   shrinkWrap: true,
@@ -358,7 +360,7 @@ class _OfferScreenState extends State<OfferScreen> {
                   itemBuilder: (context, index) {
                     BasicCode basicCode = basicCodeList[index];
                     // creating drawer items here
-                    return offerDrawer.createDrawerItem(
+                    return OfferDrawerItem(
                         index: index,
                         basicCode: basicCodeList[index],
                         onTap: () {
@@ -374,8 +376,8 @@ class _OfferScreenState extends State<OfferScreen> {
                   },
                 );
               } else {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return const Center(
+                  child: const CircularProgressIndicator(),
                 );
               }
             },

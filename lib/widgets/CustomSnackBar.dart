@@ -15,9 +15,9 @@ class CustomSnackBar {
           ),
           textAlign: TextAlign.center,
         ),
-        duration: Duration(milliseconds: 1200),
-        backgroundGradient: LinearGradient(
+        duration: const Duration(milliseconds: 1200),
+        backgroundGradient: const LinearGradient(
             colors: [Colors.white, Colors.deepOrangeAccent, Colors.white]),
-        padding: EdgeInsets.all(15));
+        padding: const EdgeInsets.all(15));
   }
 }

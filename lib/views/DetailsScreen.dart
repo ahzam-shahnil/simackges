@@ -35,7 +35,7 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 8, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
         child: Column(
           children: [
             Text(
@@ -46,7 +46,7 @@ class DetailScreen extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
 
@@ -133,8 +133,7 @@ class DetailScreen extends StatelessWidget {
               children: [
                 Container(
                   clipBehavior: Clip.hardEdge,
-                  // Todo: width: width * 0.3,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                   ),
                   decoration: BoxDecoration(
@@ -149,8 +148,8 @@ class DetailScreen extends StatelessWidget {
                           rechargeTitle: 'Confirmation',
                           package: package!),
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.yellow,
@@ -172,7 +171,7 @@ class DetailScreen extends StatelessWidget {
                 ClipOval(
                   child: Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
@@ -196,7 +195,7 @@ class DetailScreen extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
 
@@ -219,7 +218,7 @@ class DetailScreen extends StatelessWidget {
                 )
               ],
             ),
-            Spacer(),
+            const Spacer(),
 
             //? Banner Ad starts here
             Container(

@@ -22,8 +22,8 @@ class DetailContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width * 0.44,
-      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:facebook_audience_network/ad/ad_interstitial.dart';
+import 'package:facebook_audience_network/ad/ad_banner.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simackges/controller/FavColorController.dart';
@@ -8,6 +8,7 @@ import 'package:simackges/controller/FavColorController.dart';
 import 'package:simackges/services/HelperFunction.dart';
 import 'package:simackges/services/constants.dart';
 import 'package:simackges/models/Packages.dart';
+import 'package:simackges/services/packageFomatHelper.dart';
 import 'package:simackges/views/DetailsScreen.dart';
 import 'package:simackges/widgets/PackageColumn.dart';
 
@@ -32,24 +33,60 @@ class PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
+    return ListView.separated(
+      addAutomaticKeepAlives: true,
       itemCount: _packagesList.length,
+      cacheExtent: 10,
+      separatorBuilder: (BuildContext context, int index) => index % 3 == 0
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(),
+                SizedBox(
+                  height: 50,
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 3.5, horizontal: 15),
+                    child: FacebookBannerAd(
+                      placementId: kDetailBannerFbAdId,
+                      bannerSize: BannerSize.STANDARD,
+                      listener: (result, value) {
+                        switch (result) {
+                          case BannerAdResult.ERROR:
+                            print("Error: $value");
+                            break;
+                          case BannerAdResult.LOADED:
+                            print("Loaded: $value");
+                            break;
+                          case BannerAdResult.CLICKED:
+                            print("Clicked: $value");
+                            break;
+                          case BannerAdResult.LOGGING_IMPRESSION:
+                            print("Logging Impression: $value");
+                            break;
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                const Divider(),
+              ],
+            )
+          : const Divider(),
       itemBuilder: (context, index) {
         Packages package = _packagesList[index];
-
         //we reset the package Column counter to 0 ,before making card
         PackageColumn.count = 0;
 
         return Card(
           clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 3.5),
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 3.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           color: Colors.white,
           child: Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Column(
               children: [
                 //? this row is for name ,validity,price and brand logo
@@ -68,7 +105,7 @@ class PackageCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 0,
                             height: 10,
                           ),
@@ -83,8 +120,10 @@ class PackageCard extends StatelessWidget {
                                           text: 'Validity: ',
                                           children: [
                                             TextSpan(
-                                              text: "${package.validity}",
-                                              style: kGreenTextStyle,
+                                              text: formatValidity(
+                                                  validity: package.validity!),
+                                              style: kGreenTextStyle.copyWith(
+                                                  color: Colors.red),
                                             )
                                           ]),
                                       maxLines: 2,
@@ -116,8 +155,8 @@ class PackageCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(4),
-                      margin: EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.all(4),
+                      margin: const EdgeInsets.only(left: 5),
                       decoration: BoxDecoration(
                         border: Border.all(color: kPtclColor, width: 2),
                         borderRadius: BorderRadius.circular(15),
@@ -131,7 +170,7 @@ class PackageCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                   width: 5,
                 ),
@@ -193,7 +232,7 @@ class PackageCard extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 5,
                   width: 5,
                 ),
@@ -204,16 +243,17 @@ class PackageCard extends StatelessWidget {
                     //* Subsctribe button here
                     ElevatedButton(
                       onPressed: () => HelperFunction.displayInstructionDialog(
-                          context: context,
-                          backColor: backColor,
-                          rechargeTitle: 'Confirmation',
-                          package: package),
+                        context: context,
+                        backColor: backColor,
+                        rechargeTitle: 'Confirmation',
+                        package: package,
+                      ),
                       style: TextButton.styleFrom(
                           primary: backColor, backgroundColor: Colors.white),
                       child: Text('Subscribe', style: packageItemTstyle),
                     ),
 
-                    //* View detail button here
+                    //? View detail button here
                     ElevatedButton(
                       onPressed: () {
                         //? here we are changing the current value of package to see
@@ -227,18 +267,7 @@ class PackageCard extends StatelessWidget {
                               title: title,
                               package: package,
                               backColor: backColor),
-                        )!
-                            .then((value) {
-                          //? Interstital Ad here
-                          FacebookInterstitialAd.loadInterstitialAd(
-                            placementId: kInterstDetailFbAdId,
-                            listener: (result, value) {
-                              if (result == InterstitialAdResult.LOADED)
-                                FacebookInterstitialAd.showInterstitialAd(
-                                    delay: 5000);
-                            },
-                          );
-                        });
+                        );
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: backColor,

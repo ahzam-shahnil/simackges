@@ -16,8 +16,6 @@ class PackageScreen extends StatefulWidget {
     required this.isFavourite,
   });
 
-  static List<Packages> packagesList = [];
-
   final Color backColor;
   final int network;
   final int? offerNo;
@@ -34,13 +32,14 @@ class PackageScreen extends StatefulWidget {
 
 class _PackageScreenState extends State<PackageScreen> {
   bool isFocused = false;
-
+  List<Packages> packagesList = [];
   // to check if the search is empty
   bool isSearchEmpty = true;
 
   final DBHelper _dbHelper = DBHelper();
   late TextEditingController _searchController;
   final searchFocusNode = FocusNode();
+
   // ? Initializing Fav Controller here
   final controller =
       Get.lazyPut(() => FavColorController(), fenix: true, tag: 'yes');
@@ -102,14 +101,14 @@ class _PackageScreenState extends State<PackageScreen> {
                       child: TextField(
                         autofocus: isFocused,
                         focusNode: searchFocusNode,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Search',
-                          hintStyle:
-                              TextStyle(fontSize: 16, color: Colors.white38),
+                          hintStyle: const TextStyle(
+                              fontSize: 16, color: Colors.white38),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none,
@@ -118,7 +117,8 @@ class _PackageScreenState extends State<PackageScreen> {
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 0),
                         ),
                       ),
                     ),
@@ -138,7 +138,7 @@ class _PackageScreenState extends State<PackageScreen> {
                   onPressed: () => _dbHelper.deleteFavourite().then((value) {
                         setState(() {});
                       }),
-                  icon: Icon(Icons.delete_rounded))
+                  icon: const Icon(Icons.delete_rounded))
               : Container(
                   height: 0,
                   width: 0,
@@ -155,6 +155,7 @@ class _PackageScreenState extends State<PackageScreen> {
           return true;
         },
         child: FutureBuilder(
+          
           future: isSearchEmpty
               ? widget.isFavourite
                   ? _dbHelper.getFavouriteList(network: widget.network)
@@ -170,17 +171,17 @@ class _PackageScreenState extends State<PackageScreen> {
                       name: _searchController.text.trim()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              PackageScreen.packagesList = snapshot.data;
+              packagesList = snapshot.data;
               return PackageCard(
-                packagesList: PackageScreen.packagesList,
+                packagesList: packagesList,
                 height: height,
                 backColor: widget.backColor,
                 packageItemTstyle: packageItemTstyle,
                 title: widget.title,
               );
             } else {
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: const CircularProgressIndicator(),
               );
             }
           },

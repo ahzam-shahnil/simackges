@@ -11,7 +11,11 @@ import 'package:simackges/models/Packages.dart';
 
 class HelperFunction {
   static String formatDetails(String value) {
-    value = value.replaceAll("\\n", '.\n');
+    if (value.contains('null') == false) {
+      value = value.replaceAll("\\n", '.\n');
+    } else {
+      value = '';
+    }
     return value;
   }
 

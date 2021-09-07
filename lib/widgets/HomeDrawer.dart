@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:share/share.dart';
+
 import 'package:simackges/services/HelperFunction.dart';
 import 'package:simackges/services/constants.dart';
 
@@ -27,33 +28,26 @@ class HomeDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-              leading: Icon(Icons.share_sharp),
-              horizontalTitleGap: 8,
-              focusColor: Colors.grey,
-              title: const Text('Share This App'),
-              onTap: () async {
-                await Share.share(
-                    'Check out the app .\n This app contains all network packages 2021 updated.\n$kAppAddress');
-              }),
-          ListTile(
-            horizontalTitleGap: 8,
-            leading: Icon(Icons.star_border_outlined),
-            focusColor: Colors.grey,
+          HomeDrawerItem(
+            onTap: () async {
+              await Share.share(
+                  'Check out the app .\n This app contains all network packages 2021 updated.\n$kAppAddress');
+            },
+            title: const Text('Share This App'),
+            leading: const Icon(Icons.share_sharp),
+          ),
+          HomeDrawerItem(
+            leading: const Icon(Icons.star_border_outlined),
             title: const Text('Support Us'),
             onTap: () => HelperFunction.launchURl(kAppAddress),
           ),
-          ListTile(
-            horizontalTitleGap: 8,
-            leading: Icon(Icons.policy_outlined),
-            focusColor: Colors.grey,
+          HomeDrawerItem(
+            leading: const Icon(Icons.policy_outlined),
             title: const Text('Privacy Policy'),
             onTap: () => HelperFunction.launchURl(kPrivacyUrl),
           ),
-          ListTile(
-            leading: Icon(Icons.info_outline_rounded),
-            horizontalTitleGap: 8,
-            focusColor: Colors.grey,
+          HomeDrawerItem(
+            leading: const Icon(Icons.info_outline_rounded),
             title: const Text('About'),
             onTap: () {
               Navigator.pop(context);
@@ -69,9 +63,9 @@ class HomeDrawer extends StatelessWidget {
                 applicationLegalese:
                     '©2021 https://sites.google.com/view/simackges/home',
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
+                  const Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: const Text(
                         kAboutDialogText,
                         maxLines: 20,
                       ))
@@ -79,15 +73,36 @@ class HomeDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.power_settings_new),
-            focusColor: Colors.grey,
+          HomeDrawerItem(
+            leading: const Icon(Icons.power_settings_new),
             title: const Text('Exit'),
-            horizontalTitleGap: 8,
             onTap: () => SystemNavigator.pop(),
           ),
         ],
       ),
+    );
+  }
+}
+
+class HomeDrawerItem extends StatelessWidget {
+  const HomeDrawerItem({
+    Key? key,
+    required this.leading,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
+  final Widget leading;
+  final Widget title;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: leading,
+      horizontalTitleGap: 8,
+      focusColor: Colors.grey,
+      title: title,
+      onTap: onTap,
     );
   }
 }

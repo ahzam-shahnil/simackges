@@ -129,14 +129,15 @@ const kLocationIcon = Icons.location_on_outlined;
 const kOtherIcon = Icons.card_giftcard_outlined;
 
 // text style
-var kOpenSans = 'OpenSans_Reg';
-var kOpenSansBold = 'OpenSans_Bold';
+const kOpenSans = 'OpenSans_Reg';
+const kOpenSansBold = 'OpenSans_Bold';
 
-var kOfferTextStyle =
+const kOfferTextStyle =
     TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w500);
 const kPackageTextStyle =
     TextStyle(fontSize: 17, color: Colors.black, fontWeight: FontWeight.bold);
 var kWhiteTextStyle = TextStyle(color: Colors.grey[50]);
-var kGreenTextStyle = TextStyle(color: kZongColor, fontWeight: FontWeight.w700);
-var kGreenHeadingStyle =
+const kGreenTextStyle =
+    TextStyle(color: kZongColor, fontWeight: FontWeight.w700);
+const kGreenHeadingStyle =
     TextStyle(color: kZongColor, fontWeight: FontWeight.w600, fontSize: 23);
