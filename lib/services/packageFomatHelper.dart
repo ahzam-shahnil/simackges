@@ -7,9 +7,15 @@ String formatValidity({String? validity}) {
               ' Hour'
           : validity.contains('null')
               ? '--'
-              : int.parse(validity) >= 30
-                  ? (int.parse(validity) ~/ 30).toString() + ' Month'
-                  : validity + ' Day';
+              : validity.contains(",")
+                  ? int.parse(validity.replaceAll(',', '')) >= 30
+                      ? (int.parse(validity.replaceAll(',', '')) ~/ 30)
+                              .toString() +
+                          ' Month'
+                      : validity + ' Day'
+                  : int.parse(validity) >= 30
+                      ? (int.parse(validity) ~/ 30).toString() + ' Month'
+                      : validity + ' Day';
 }
 
 String formatPackageDetails({String? details}) {
